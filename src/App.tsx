@@ -263,7 +263,7 @@ function App() {
                             <div className="flex items-center gap-2">
                                 <span className="font-bold text-gray-200 text-base group-hover:text-white transition-colors">{link.text}</span>
                                 {link.badge && (
-                                    <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-md bg-white text-black ${themeMap[link.theme].badge} group-hover:text-white transition-colors shadow-sm`}>{link.badge}</span>
+<span className={`text-[9px] font-bold px-2 py-0.5 rounded text-white ${themeMap[link.theme].badge} shadow-sm`}>{link.badge}</span>
                                 )}
                             </div>
                             <span className="text-[11px] text-gray-500 font-medium mt-0.5 group-hover:text-gray-400">{link.subText}</span>
