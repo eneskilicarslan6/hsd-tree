@@ -3,7 +3,7 @@ import { motion, AnimatePresence, useMotionTemplate, useMotionValue, useSpring, 
 import { FaInstagram, FaLinkedin, FaYoutube, FaWhatsapp, FaGlobe, FaShareAlt, FaCheck, FaChevronRight, FaGlobeAmericas, FaTwitter } from 'react-icons/fa';
 import { HiOutlineMail, HiLightningBolt, HiUserGroup } from 'react-icons/hi';
 
-// --- TİP TANIMLAMALARI ---
+
 interface LinkItem {
   id: number;
   text: string;
@@ -14,7 +14,6 @@ interface LinkItem {
   badge?: string;
 }
 
-// --- VERİLER ---
 const linkData: LinkItem[] = [
   {
     id: 1,
@@ -77,7 +76,7 @@ const linkData: LinkItem[] = [
   }
 ];
 
-// --- RENK HARİTASI ---
+
 const themeMap: any = {
     red:    { glow: 'rgba(239, 68, 68, 0.15)', border: 'group-hover:border-red-500/50', bg: 'group-hover:bg-red-600', text: 'group-hover:text-red-500', badge: 'bg-red-600' },
     pink:   { glow: 'rgba(236, 72, 153, 0.15)', border: 'group-hover:border-pink-500/50', bg: 'group-hover:bg-pink-600', text: 'group-hover:text-pink-500', badge: 'bg-pink-600' },
@@ -85,11 +84,9 @@ const themeMap: any = {
     sky:    { glow: 'rgba(14, 165, 233, 0.15)', border: 'group-hover:border-sky-500/50', bg: 'group-hover:bg-sky-600', text: 'group-hover:text-sky-500', badge: 'bg-sky-600' },
     green:  { glow: 'rgba(34, 197, 94, 0.15)',  border: 'group-hover:border-green-500/50', bg: 'group-hover:bg-green-600', text: 'group-hover:text-green-500', badge: 'bg-green-600' },
     yellow: { glow: 'rgba(234, 179, 8, 0.15)',   border: 'group-hover:border-yellow-500/50', bg: 'group-hover:bg-yellow-600', text: 'group-hover:text-yellow-500', badge: 'bg-yellow-600' },
-    gray:   { glow: 'rgba(156, 163, 175, 0.15)', border: 'group-hover:border-gray-500/50', bg: 'group-hover:bg-gray-600', text: 'group-hover:text-gray-200', badge: 'bg-gray-600' },
-    black:  { glow: 'rgba(255, 255, 255, 0.15)', border: 'group-hover:border-neutral-500/50', bg: 'group-hover:bg-black', text: 'group-hover:text-white', badge: 'bg-black border border-white/20' },
 };
 
-// --- TEXT ROTATOR ---
+
 const TextRotator = () => {
   const words = ["Geleceği Kodla", "Sınırları Zorla", "Topluluğa Katıl"];
   const [index, setIndex] = useState(0);
@@ -115,7 +112,7 @@ const TextRotator = () => {
   );
 };
 
-// --- SPOTLIGHT CARD (PERFORMANS AYARLI) ---
+
 function SpotlightCard({ children, className = "", theme = "red" }: any) {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -136,10 +133,7 @@ function SpotlightCard({ children, className = "", theme = "red" }: any) {
       whileTap={{ scale: 0.98 }}
       transition={{ duration: 0.2 }}
     >
-      {/* !!! KRİTİK AYAR !!!
-          'hidden md:block': Bu ışık efekti telefonda (hidden) GİZLENECEK, 
-          sadece PC'de (md:block) GÖRÜNECEK. Donmayı engelleyen kod budur.
-      */}
+
       <motion.div
         className="hidden md:block pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition duration-300"
         style={{
@@ -151,12 +145,12 @@ function SpotlightCard({ children, className = "", theme = "red" }: any) {
   );
 }
 
-// --- ANA UYGULAMA ---
+
 function App() {
   const [copied, setCopied] = useState(false);
-  const [isMobile, setIsMobile] = useState(false); // Mobil kontrolü
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Ekran genişliğini kontrol et
+
   useEffect(() => {
       const checkMobile = () => setIsMobile(window.innerWidth < 768);
       checkMobile();
@@ -164,17 +158,16 @@ function App() {
       return () => window.removeEventListener('resize', checkMobile);
   }, []);
   
-  // --- 3D TILT AYARLARI ---
+
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const mouseXSpring = useSpring(x);
   const mouseYSpring = useSpring(y);
-  // Mobilde tilt açısını sıfırla, PC'de normal çalışsın
   const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], isMobile ? ["0deg", "0deg"] : ["7deg", "-7deg"]);
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], isMobile ? ["0deg", "0deg"] : ["-7deg", "7deg"]);
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (isMobile) return; // Mobilde hesaplama yapma
+    if (isMobile) return;
     const { width, height, left, top } = e.currentTarget.getBoundingClientRect();
     x.set((e.clientX - left) / width - 0.5);
     y.set((e.clientY - top) / height - 0.5);
@@ -190,20 +183,27 @@ function App() {
     setCopied(true); setTimeout(() => setCopied(false), 2000);
   };
 
+
+  const logoAnimation = isMobile 
+  ? { scale: [1, 1.03, 1] } 
+  : { 
+      opacity: [1, 0.3, 1, 1, 0.5, 1],
+      scale: [1, 0.98, 1, 1, 0.99, 1],
+      filter: ["blur(0px)", "blur(2px)", "blur(0px)"]
+    };
+
   return (
     <div 
-        // md:perspective-1000 sadece PC'de 3D derinlik verir. Mobilde düz durur.
         className="min-h-screen w-full flex items-center justify-center py-10 px-4 relative bg-black text-white font-sans overflow-hidden md:perspective-1000"
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
     >
       
-      {/* --- ARKA PLAN --- */}
+
       <div className="fixed inset-0 z-0 pointer-events-none">
           <div className="absolute inset-0 opacity-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] brightness-100 contrast-150"></div>
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px]"></div>
           
-          {/* Mobilde animasyonlu arka planları biraz basitleştirelim */}
           <motion.div 
             animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }} 
             transition={{ duration: 10, repeat: Infinity }}
@@ -216,7 +216,7 @@ function App() {
           />
       </div>
 
-      {/* --- ANA KAPSAYICI --- */}
+
       <motion.div 
         style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
         initial={{ opacity: 0, scale: 0.9 }}
@@ -225,40 +225,35 @@ function App() {
         className="relative w-full max-w-[440px] z-10"
       >
 
-        {/* --- GLOW EFEKTİ (Mobilde gizlenecek: hidden md:block) --- */}
         <div className="hidden md:block absolute -inset-4 bg-red-600/20 blur-3xl rounded-[50px] -z-10 animate-pulse-slow"></div>
-
-        {/* --- KART --- */}
-        <div className="relative bg-[#050505]/95 backdrop-blur-md md:backdrop-blur-2xl border border-white/10 rounded-[40px] shadow-2xl p-6 sm:p-8 overflow-hidden transform-gpu">
-            
-            {/* Header */}
+        <div className="relative bg-[#050505]/95 backdrop-blur-md md:backdrop-blur-2xl border border-white/10 rounded-[40px] shadow-2xl p-6 sm:p-8 overflow-hidden transform-gpu">            
             <div className="relative flex flex-col items-center text-center pb-6">
                 
-                {/* LOGO ALANI */}
+
                 <motion.div 
                     whileTap={{ scale: 0.95 }}
                     className="relative w-36 h-36 mb-5 group cursor-pointer"
                 >
                     <div className="absolute inset-0 bg-red-600/20 rounded-full blur-3xl opacity-20 group-hover:opacity-40 transition duration-500"></div>
                     <div className="relative w-full h-full bg-black rounded-full border border-neutral-800 flex items-center justify-center shadow-2xl ring-1 ring-white/5 z-10 overflow-hidden">
+                        
+
                         <motion.img 
                             src="/logo.png" 
                             alt="HSD Logo" 
                             className="w-28 object-contain drop-shadow-2xl"
-                            animate={{ 
-                                opacity: [1, 0.3, 1, 1, 0.5, 1],
-                                scale: [1, 0.98, 1, 1, 0.99, 1],
-                                filter: ["blur(0px)", "blur(2px)", "blur(0px)"]
-                            }}
+                            animate={logoAnimation}
                             transition={{ 
-                                duration: 5, 
+                                duration: isMobile ? 3 : 5,
                                 repeat: Infinity, 
                                 ease: "easeInOut",
-                                times: [0, 0.1, 0.2, 0.8, 0.9, 1]
+                                times: isMobile ? undefined : [0, 0.1, 0.2, 0.8, 0.9, 1]
                             }}
                         />
                         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-red-500/10 to-transparent w-full h-full translate-y-[-100%] group-active:translate-y-[100%] transition-transform duration-300 pointer-events-none"></div>
                     </div>
+                     
+
                      <div className="absolute bottom-1 right-1 bg-black p-2 rounded-full border border-neutral-800 shadow-lg z-20">
                             <FaGlobeAmericas className="text-red-600 text-sm animate-pulse" />
                     </div>
@@ -267,7 +262,7 @@ function App() {
                 <h1 className="text-2xl font-black tracking-tight text-white uppercase drop-shadow-md">HSD TRABZON ÜNİVERSİTESİ</h1>
                 <TextRotator />
 
-                {/* İstatistikler */}
+
                 <div className="flex items-center gap-5 mt-5 bg-neutral-900/50 border border-white/5 px-6 py-2.5 rounded-full shadow-inner hover:border-red-900/50 transition-colors cursor-default">
                     <div className="flex flex-col items-center">
                         <div className="flex items-center gap-1.5 text-white font-bold text-base">
@@ -284,7 +279,7 @@ function App() {
             </div>
 
 
-            {/* --- LİNKLER (Renkler ve Badge Düzeltildi) --- */}
+
             <div className="flex flex-col gap-3 relative z-10">
             {linkData.map((link, index) => (
                 <motion.div
@@ -295,7 +290,6 @@ function App() {
                 >
                     <SpotlightCard theme={link.theme}>
                         <a href={link.url} target="_blank" rel="noopener noreferrer" className="relative flex items-center p-3.5 z-10">
-                        {/* İkon */}
                         <div className={`p-2.5 rounded-lg bg-neutral-800 text-lg text-gray-400 ${themeMap[link.theme].bg} group-hover:text-white transition-all duration-300`}>
                             {link.icon}
                         </div>
@@ -304,7 +298,6 @@ function App() {
                             <div className="flex items-center gap-2">
                                 <span className="font-bold text-gray-200 text-base group-hover:text-white transition-colors">{link.text}</span>
                                 {link.badge && (
-                                    // BURASI DÜZELDİ: bg-white ve text-black SİLİNDİ, tema rengi eklendi
                                     <span className={`text-[9px] font-bold px-2 py-0.5 rounded text-white ${themeMap[link.theme].badge} shadow-sm`}>
                                         {link.badge}
                                     </span>
@@ -319,7 +312,6 @@ function App() {
             ))}
             </div>
 
-            {/* --- FOOTER --- */}
             <div className="mt-8 pt-6 border-t border-white/5 flex flex-col items-center gap-4">
                 <div className="flex gap-3 w-full">
                     <motion.button 
