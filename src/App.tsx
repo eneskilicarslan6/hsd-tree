@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useMotionTemplate, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { FaInstagram, FaLinkedin, FaYoutube, FaWhatsapp, FaGlobe, FaShareAlt, FaCheck, FaChevronRight, FaGlobeAmericas, FaTwitter } from 'react-icons/fa';
+import { FaInstagram, FaLinkedin, FaYoutube, FaWhatsapp, FaGlobe, FaShareAlt, FaCheck, FaChevronRight, FaGlobeAmericas, FaMedium } from 'react-icons/fa';
 import { HiOutlineMail, HiLightningBolt, HiUserGroup } from 'react-icons/hi';
 
 
@@ -13,6 +13,7 @@ interface LinkItem {
   theme: string;
   badge?: string;
 }
+
 
 const linkData: LinkItem[] = [
   {
@@ -41,14 +42,11 @@ const linkData: LinkItem[] = [
     icon: <FaLinkedin />,
     theme: "blue"
   },
-  {
-    id: 4,
-    text: "X (Twitter)",
-    subText: "Anlık gelişmeler",
-    url: "https://twitter.com",
-    icon: <FaTwitter />,
-    theme: "sky"
-  },
+  { id: 4, text: "Medium",
+    subText: "Anlık gelişmelerden haberdar ol",
+    url: "https://medium.com/@hsdtrabzon",
+    icon: <FaMedium/>,
+    theme: "gray" },
   {
     id: 5,
     text: "WhatsApp Topluluğu",
@@ -84,6 +82,8 @@ const themeMap: any = {
     sky:    { glow: 'rgba(14, 165, 233, 0.15)', border: 'group-hover:border-sky-500/50', bg: 'group-hover:bg-sky-600', text: 'group-hover:text-sky-500', badge: 'bg-sky-600' },
     green:  { glow: 'rgba(34, 197, 94, 0.15)',  border: 'group-hover:border-green-500/50', bg: 'group-hover:bg-green-600', text: 'group-hover:text-green-500', badge: 'bg-green-600' },
     yellow: { glow: 'rgba(234, 179, 8, 0.15)',   border: 'group-hover:border-yellow-500/50', bg: 'group-hover:bg-yellow-600', text: 'group-hover:text-yellow-500', badge: 'bg-yellow-600' },
+    gray:   { glow: 'rgba(156, 163, 175, 0.15)', border: 'group-hover:border-gray-500/50', bg: 'group-hover:bg-gray-600', text: 'group-hover:text-gray-200', badge: 'bg-gray-600' },
+    black:  { glow: 'rgba(255, 255, 255, 0.15)', border: 'group-hover:border-neutral-500/50', bg: 'group-hover:bg-black', text: 'group-hover:text-white', badge: 'bg-black border border-white/20' },
 };
 
 
@@ -131,8 +131,7 @@ function SpotlightCard({ children, className = "", theme = "red" }: any) {
       onMouseMove={handleMouseMove}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
-      transition={{ duration: 0.2 }}
-    >
+      transition={{ duration: 0.2 }}>
 
       <motion.div
         className="hidden md:block pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition duration-300"
@@ -163,6 +162,8 @@ function App() {
   const y = useMotionValue(0);
   const mouseXSpring = useSpring(x);
   const mouseYSpring = useSpring(y);
+  
+
   const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], isMobile ? ["0deg", "0deg"] : ["7deg", "-7deg"]);
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], isMobile ? ["0deg", "0deg"] : ["-7deg", "7deg"]);
 
@@ -185,7 +186,7 @@ function App() {
 
 
   const logoAnimation = isMobile 
-  ? { scale: [1, 1.03, 1] } 
+  ? { scale: [1, 1.03, 1] }
   : { 
       opacity: [1, 0.3, 1, 1, 0.5, 1],
       scale: [1, 0.98, 1, 1, 0.99, 1],
@@ -201,50 +202,54 @@ function App() {
       
 
       <div className="fixed inset-0 z-0 pointer-events-none">
-          <div className="absolute inset-0 opacity-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] brightness-100 contrast-150"></div>
+          <div className="hidden md:block absolute inset-0 opacity-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] brightness-100 contrast-150"></div>         
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px]"></div>
-          
-          <motion.div 
-            animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }} 
-            transition={{ duration: 10, repeat: Infinity }}
-            className="absolute top-[-20%] left-[-20%] w-[800px] h-[800px] bg-red-900/30 rounded-full blur-[100px] md:blur-[180px]" 
-          />
-           <motion.div 
-            animate={{ scale: [1, 1.3, 1], opacity: [0.05, 0.1, 0.05] }} 
-            transition={{ duration: 12, repeat: Infinity, delay: 3 }}
-            className="absolute bottom-[-20%] right-[-20%] w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[100px] md:blur-[180px]" 
-          />
+          {isMobile ? (
+            <>
+              <div className="absolute top-[-20%] left-[-20%] w-[600px] h-[600px] bg-red-900/30 rounded-full blur-[80px]" />
+              <div className="absolute bottom-[-20%] right-[-20%] w-[500px] h-[500px] bg-blue-900/10 rounded-full blur-[80px]" />
+            </>
+          ) : (
+            <>
+              <motion.div 
+                animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }} 
+                transition={{ duration: 10, repeat: Infinity }}
+                className="absolute top-[-20%] left-[-20%] w-[800px] h-[800px] bg-red-900/30 rounded-full blur-[180px]" 
+              />
+              <motion.div 
+                animate={{ scale: [1, 1.3, 1], opacity: [0.05, 0.1, 0.05] }} 
+                transition={{ duration: 12, repeat: Infinity, delay: 3 }}
+                className="absolute bottom-[-20%] right-[-20%] w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[180px]" 
+              />
+            </>
+          )}
       </div>
-
 
       <motion.div 
         style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8 }}
-        className="relative w-full max-w-[440px] z-10"
-      >
-
+        className="relative w-full max-w-[440px] z-10">
+  
         <div className="hidden md:block absolute -inset-4 bg-red-600/20 blur-3xl rounded-[50px] -z-10 animate-pulse-slow"></div>
-        <div className="relative bg-[#050505]/95 backdrop-blur-md md:backdrop-blur-2xl border border-white/10 rounded-[40px] shadow-2xl p-6 sm:p-8 overflow-hidden transform-gpu">            
+        <div className={`relative border border-white/10 rounded-[40px] shadow-2xl p-6 sm:p-8 overflow-hidden transform-gpu
+                        ${isMobile ? 'bg-[#080808] backdrop-blur-none' : 'bg-[#050505]/95 backdrop-blur-2xl'}`}>
+            
             <div className="relative flex flex-col items-center text-center pb-6">
-                
-
                 <motion.div 
                     whileTap={{ scale: 0.95 }}
-                    className="relative w-36 h-36 mb-5 group cursor-pointer"
-                >
+                    className="relative w-36 h-36 mb-5 group cursor-pointer">
                     <div className="absolute inset-0 bg-red-600/20 rounded-full blur-3xl opacity-20 group-hover:opacity-40 transition duration-500"></div>
                     <div className="relative w-full h-full bg-black rounded-full border border-neutral-800 flex items-center justify-center shadow-2xl ring-1 ring-white/5 z-10 overflow-hidden">
                         
-
                         <motion.img 
                             src="/logo.png" 
                             alt="HSD Logo" 
                             className="w-28 object-contain drop-shadow-2xl"
-                            animate={logoAnimation}
+                            animate={logoAnimation} 
                             transition={{ 
-                                duration: isMobile ? 3 : 5,
+                                duration: isMobile ? 3 : 5, 
                                 repeat: Infinity, 
                                 ease: "easeInOut",
                                 times: isMobile ? undefined : [0, 0.1, 0.2, 0.8, 0.9, 1]
@@ -253,7 +258,6 @@ function App() {
                         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-red-500/10 to-transparent w-full h-full translate-y-[-100%] group-active:translate-y-[100%] transition-transform duration-300 pointer-events-none"></div>
                     </div>
                      
-
                      <div className="absolute bottom-1 right-1 bg-black p-2 rounded-full border border-neutral-800 shadow-lg z-20">
                             <FaGlobeAmericas className="text-red-600 text-sm animate-pulse" />
                     </div>
@@ -278,16 +282,13 @@ function App() {
                 </div>
             </div>
 
-
-
             <div className="flex flex-col gap-3 relative z-10">
             {linkData.map((link, index) => (
                 <motion.div
                     key={link.id}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 * index }}
-                >
+                    transition={{ delay: 0.1 * index }}>
                     <SpotlightCard theme={link.theme}>
                         <a href={link.url} target="_blank" rel="noopener noreferrer" className="relative flex items-center p-3.5 z-10">
                         <div className={`p-2.5 rounded-lg bg-neutral-800 text-lg text-gray-400 ${themeMap[link.theme].bg} group-hover:text-white transition-all duration-300`}>
