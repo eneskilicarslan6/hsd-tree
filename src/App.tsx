@@ -103,7 +103,7 @@ const TextRotator = () => {
           animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
           exit={{ y: -20, opacity: 0, filter: "blur(5px)" }}
           transition={{ duration: 0.5 }}
-          className="text-neutral-400 text-sm font-medium tracking-wide uppercase"
+          className="text-neutral-400 text-sm font-medium tracking-wide"
         >
           {words[index]}
         </motion.p>
