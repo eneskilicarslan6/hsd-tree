@@ -49,9 +49,9 @@ const linkData: LinkItem[] = [
     theme: "gray" },
   {
     id: 5,
-    text: "WhatsApp Topluluğu",
+    text: "WhatsApp",
     subText: "Sohbet ve yardımlaşma grubu",
-    url: "https://whatsapp.com",
+    url: "https://wa.me/905051364450",
     icon: <FaWhatsapp />,
     theme: "green",
     badge: "KATIL"
