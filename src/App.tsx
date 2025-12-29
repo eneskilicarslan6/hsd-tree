@@ -323,7 +323,7 @@ function App() {
                         {copied ? <FaCheck className="text-red-500" /> : <FaShareAlt />} {copied ? "Kopyalandı" : "Paylaş"}
                     </motion.button>
                 </div>
-                <p className="text-[10px] text-gray-600 font-medium">Designed by <span className="font-bold text-red-700 hover:text-red-500 transition-colors cursor-pointer">eneskilicarslan6</span></p>
+                <p className="text-[10px] text-gray-600 font-medium">Designed by <span className="font-bold text-red-700 hover:text-red-500 transition-colors cursor-pointer">HSD TRABZON</span></p>
             </div>
         </div>
       </motion.div>
